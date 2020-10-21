@@ -40,14 +40,23 @@ def build_subopt_result(structure, energy, data):
     """
         Build the subopt result dictionary
     """
+    dot_bracket_str = ""
+    
     if not structure == None:
-        # use the same number of structures as num_of_clusters 
-        if data['counter'] < data['num_of_clusters']:
+        # use the same number of structures as num_of_structures 
+        if data['counter'] < data['num_of_structures']:
             # print (">subopt %d" % data['counter'])
             # print ("%s" % data['sequence'])
             # print ("%s [%6.2f]" % (structure, energy))
+            id_subopt = ">%s_%s_subopt%d" % (data['family_name'], data['id'], data['counter'])
+            data['rna_dict']['%s' % id_subopt] = structure
 
-            data['structure'][">subopt %d" % data['counter']] = structure
+            dot_bracket_str = dot_bracket_str + (id_subopt + '\n' +
+                            data['rna_dict']['sequence'] + '\n' +
+                            structure + '\n'
+                            )
+
+            data['rna_sequence'].append(dot_bracket_str)
 
             # increase structure counter
             data['counter'] = data['counter'] + 1
@@ -55,9 +64,10 @@ def build_subopt_result(structure, energy, data):
             pass
 
 
-def compute_structure(family_name, num_of_clusters, num_of_sequences):
+def compute_structure(family_name, num_of_structures, num_of_sequences):
     dict_RNA = read_fasta_file("Input/" + family_name + ".fa/" + family_name + ".fa", num_of_sequences)
-    
+    rna_sequence = []
+
     # seq = "ATAATGATACTTCCGTCCAGTCACAGTCCGAGCGTGAAGCGGCAAGCCTGCCGCAATCCGCCGCAGGCAATGAGGGCGGCCCGGTGAGATCCACGGGGTGGTGAAATTCCAATGA"
 
     # Set global switch for unique ML decomposition
@@ -66,7 +76,7 @@ def compute_structure(family_name, num_of_clusters, num_of_sequences):
     for id in dict_RNA:
         seq = dict_RNA[id]['sequence']
         
-        subopt_data = { 'counter' : 0, 'structure': dict_RNA[id], 'num_of_clusters': num_of_clusters}
+        subopt_data = { 'counter' : 0, 'rna_dict': dict_RNA[id], 'num_of_structures': num_of_structures, 'id': id, 'rna_sequence': rna_sequence, 'family_name': family_name}
 
         # Create a 'fold_compound' for our sequence
         a = RNA.fold_compound(seq)
@@ -75,5 +85,5 @@ def compute_structure(family_name, num_of_clusters, num_of_sequences):
         # the MFE and print each structure using the function above
         a.subopt_cb(500, build_subopt_result, subopt_data)
         
-    return dict_RNA
+    return dict_RNA, "\n".join(rna_sequence)
 
