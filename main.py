@@ -1,6 +1,4 @@
 from Clusters import *
-from sklearn.cluster import KMeans
-from sklearn.metrics import accuracy_score
 
 
 def main():
@@ -16,17 +14,18 @@ def main():
 
     xTrain, xTest, yTrain, yTest = clusters.splitTrainAndTest(0.5, 0.5)
 
-    kmeans = KMeans(n_clusters=5, random_state=0).fit(xTrain)
-    # yTrain_label = kmeans.labels_
-    # print(yTrain_label)
-    # print(np.array(yTrain['Family']))
+    clusters.k_means(xTrain, xTest, yTrain, yTest)
+    clusters.miniBatchKMeans(xTrain, xTest, yTrain, yTest)
+    clusters.agglomerativeClustering(xTrain, xTest, yTrain, yTest)
+    clusters.birch(xTrain, xTest, yTrain, yTest)
+    clusters.dbscan(xTrain, xTest, yTrain, yTest)
+    # clusters.optics(xTrain, xTest, yTrain, yTest)
+    clusters.meanShift(xTrain, xTest, yTrain, yTest)
+    clusters.spectralClustering(xTrain, xTest, yTrain, yTest)
+    clusters.gaussianMixture(xTrain, xTest, yTrain, yTest)
 
-    yTest_predict = kmeans.predict(xTest)
-    print("Predict: \n", yTest_predict)
-    print("Actual: \n", np.array(yTest['Family']))
-
-    score = accuracy_score(np.array(yTest['Family']), yTest_predict)
-    print(score)
+    # clusters.affinityPropagation(xTrain, xTest, yTrain, yTest)
+    
 
 
 if __name__ == "__main__":

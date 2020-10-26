@@ -5,6 +5,9 @@ from sklearn.model_selection import StratifiedKFold
 import pandas as pd
 import numpy as np
 import os
+from sklearn.cluster import SpectralClustering, MeanShift, KMeans, Birch, AffinityPropagation, AgglomerativeClustering, DBSCAN, OPTICS, MiniBatchKMeans
+from sklearn.mixture import GaussianMixture
+from sklearn.metrics import accuracy_score
 
 
 class Clusters:
@@ -26,65 +29,6 @@ class Clusters:
         self.dict_allFamilies = dict()
         self.dataFrameSNM = self.transform_SNM_to_DataFrame()
                 
-    # def knn(self, xNewTrain, yNewTrain):
-    #     """
-
-    #     :param xNewTrain: features
-    #     :param yNewTrain: target
-    #     :return: trained classifier
-    #     """
-    #     # Use kNN classifier to predict
-    #     # divide training into two dataFrames, one for training, one for find best key
-    #     xKNNTrain, xKNNTest, yKNNTrain, yKNNTest = self.splitTrainAndTest(xNewTrain, yNewTrain, 0.2, 0.8)
-    #     Classifier = findBestKforKNN(xKNNTrain, yKNNTrain)
-    #     # Classifier = KNeighborsClassifier(n_neighbors=3)
-    #     Classifier.fit(xKNNTest, yKNNTest)
-    #     return Classifier
-
-    # def rf(self, xNewTrain, yNewTrain):
-    #     """
-
-    #     :param xNewTrain: features
-    #     :param yNewTrain: target
-    #     :return: trained classifier
-    #     """
-    #     # Use Random Forest classifier to predict
-    #     # k-fold cross validation score
-    #     # Classifier = kFoldCrossValidation(xNewTrain, yNewTrain, randomForest(xNewTrain, yNewTrain))[0]
-    #     Classifier = RandomForestClassifier(random_state=0)
-    #     start_time = time.time()
-    #     Classifier.fit(xNewTrain, yNewTrain)
-    #     rfTrainingTime = (time.time() - start_time)
-    #     # print("\n---Training RF %s seconds ---\n" % rfTrainingTime)
-    #     return Classifier, rfTrainingTime
-
-    # def nn(self, xNewTrain, yNewTrain):
-    #     """
-
-    #     :param xNewTrain: features
-    #     :param yNewTrain: target
-    #     :return: trained classifier
-    #     """
-    #     # Create a Neural Network Classifier
-    #     # Classifier = neuralNetwork(xNewTrain, yNewTrain)
-    #     Classifier = MLPClassifier(random_state=0)
-    #     start_time = time.time()
-    #     Classifier.fit(xNewTrain, yNewTrain)
-    #     nnTrainingTime = (time.time() - start_time)
-    #     # print("\n---Training NN %s seconds ---\n" % nnTrainingTime)
-    #     return Classifier, nnTrainingTime
-
-    # def adaboost(self, xNewTrain, yNewTrain):
-    #     """
-
-    #     :param xNewTrain: features
-    #     :param yNewTrain: target
-    #     :return: trained classifier
-    #     """
-    #     # Create a AdaBoost Classifier
-    #     Classifier = AdaBoostClassifier()
-    #     Classifier.fit(xNewTrain, yNewTrain)
-    #     return Classifier
 
     def splitTrainAndTest(self, trainSize, testSize):
         """
@@ -145,3 +89,122 @@ class Clusters:
             family_column.extend(single_family)
         df['Family'] = family_column
         return df
+
+    def k_means(self, xTrain, xTest, yTrain, yTest):
+        model = KMeans(n_clusters=len(self.family_list), random_state=0).fit(xTrain)
+        # yTrain_label = kmeans.labels_
+        # print(yTrain_label)
+        # print(np.array(yTrain['Family']))
+
+        yTest_predict = model.predict(xTest)
+        print("Kmeans")
+        # print("Predict: \n", yTest_predict)
+        # print("Actual: \n", np.array(yTest['Family']))
+
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+    
+
+    def affinityPropagation(self, xTrain, xTest, yTrain, yTest):
+        """
+        affinity: {‘euclidean’, ‘precomputed’}, default=’euclidean’
+            Which affinity to use. At the moment ‘precomputed’ and euclidean are supported.
+            ‘euclidean’ uses the negative squared euclidean distance between points.
+        """
+        model = AffinityPropagation(random_state=0).fit(xTrain)
+        yTest_predict = model.predict(xTest)
+        print("AffinityPropagation")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+    
+    def agglomerativeClustering(self, xTrain, xTest, yTrain, yTest):
+        """
+        linkage: {“ward”, “complete”, “average”, “single”}, default=”ward”
+            ward: minimizes the variance of the clusters being merged.
+            average: uses the average of the distances of each observation of the two sets.
+            complete:  uses the maximum distances between all observations of the two sets.
+            single uses the minimum of the distances between all observations of the two sets.
+        affinity: str or callable, default=’euclidean’
+        """
+        model = AgglomerativeClustering(n_clusters=len(self.family_list))
+        yTest_predict = model.fit_predict(xTest)
+        print("Agglomerative")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+    
+    def birch(self, xTrain, xTest, yTrain, yTest):
+        """
+        """
+        model = Birch(n_clusters=len(self.family_list)).fit(xTrain)
+        yTest_predict = model.predict(xTest)
+        print("Birch")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+
+    def dbscan(self, xTrain, xTest, yTrain, yTest):
+        """
+        metric: string, or callable, default=’euclidean’
+            The metric to use when calculating distance between instances in a feature array.
+        epsfloat: default=0.5
+        min_samplesint: default=5
+        """
+        model = DBSCAN()
+        yTest_predict = model.fit_predict(xTest)
+        print("DBSCAN")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+    
+    def miniBatchKMeans(self, xTrain, xTest, yTrain, yTest):
+        """
+        """
+        model = MiniBatchKMeans(n_clusters=len(self.family_list)).fit(xTrain)
+        yTest_predict = model.predict(xTest)
+        print("MiniBatchKMeans")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+
+    def meanShift(self, xTrain, xTest, yTrain, yTest):
+        """
+        """
+        model = MeanShift()
+        yTest_predict = model.fit_predict(xTest)
+        print("MeanShift")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+
+    def optics(self, xTrain, xTest, yTrain, yTest):
+        """
+        epsfloat: default=0.5
+        min_samplesint: default=5
+        """
+        model = OPTICS()
+        yTest_predict = model.fit_predict(xTest)
+        print("OPTICS")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+    
+    def spectralClustering(self, xTrain, xTest, yTrain, yTest):
+        """
+        """
+        model = SpectralClustering(n_clusters=len(self.family_list))
+        yTest_predict = model.fit_predict(xTest)
+        print("SpectralClustering")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
+
+    
+    def gaussianMixture(self, xTrain, xTest, yTrain, yTest):
+        """
+        """
+        model = GaussianMixture(n_components=len(self.family_list)).fit(xTrain)
+        yTest_predict = model.predict(xTest)
+        print("GaussianMixture")
+        score = accuracy_score(np.array(yTest['Family']), yTest_predict)
+        print("\t accuracy score:", score)
