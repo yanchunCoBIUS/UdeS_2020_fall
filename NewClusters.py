@@ -10,25 +10,24 @@ from sklearn.mixture import GaussianMixture
 from sklearn.metrics import accuracy_score
 
 
-class Clusters:
+class NewClusters:
     """
     Parameters
     ----------
     
     Attributes
     ----------
-    dataFrameSNM:
     family_list:  
     num_of_structures: 
     num_of_sequences:
     """
-    def __init__(self, family_list, num_of_structures, num_of_sequences):
+    def __init__(self, family_list, num_of_structures, num_of_sequences, new_df):
         self.family_list = family_list
         self.num_of_structures = num_of_structures
         self.num_of_sequences = num_of_sequences
-        self.dict_allFamilies = dict()
+        self.df = new_df
         self.dataFrameSNM = self.transform_SNM_to_DataFrame()
-                
+                            
 
     def splitTrainAndTest(self, trainSize, testSize):
         """
@@ -49,51 +48,28 @@ class Clusters:
         x = self.dataFrameSNM.iloc[:, 1:-1]
         # target
         y = self.dataFrameSNM.iloc[:, [-1]]
-        return x, y
-    
-    def use_allFamilies_runSNM(self):
-        """
-        Run SUM
-        """
-        input_for_SNM = ""
-
-        for family_name in self.family_list:
-            dict_RNA, rna_sequence = compute_structure(family_name, self.num_of_structures, self.num_of_sequences)
-
-            # dictionary contains all information
-            self.dict_allFamilies[family_name] = dict_RNA
-
-            input_for_SNM = input_for_SNM + '\n' + rna_sequence
-                
-        runSNM(input_for_SNM)
-        
+        return x, y        
 
     def get_dataFrameSNM(self):
         """
         return SNM's DataFrame
         """
         return self.dataFrameSNM
-
-    def get_dict_allFamilies(self):
-        """
-        return dictionary contains all information
-        """
-        return self.dict_allFamilies
+    
 
     def transform_SNM_to_DataFrame(self):
         """
-        Read Super_n_motif(SNM) result: matSnmRep_SSbySnm.csv as a DataFrame
+        11/17 Need to improve: change name and class, because is reuse the Clusters class.
         """
-        self.use_allFamilies_runSNM()
-
-        df = pd.read_csv(os.path.join(os.getcwd(), "super_n_motif", "lib", "superNMotif", "resultMatrix", "matSnmRep_SSbySnm.csv"))
+        df = self.df
         
         family_column = []
         for i in range(len(self.family_list)):
-            single_family = np.full(self.num_of_structures * self.num_of_sequences, i)
+            single_family = np.full(self.num_of_sequences, i)
             family_column.extend(single_family)
         df['Family'] = family_column
         return df
+
 
     def k_means(self, x, y):
         model = KMeans(n_clusters=len(self.family_list), random_state=0)
@@ -101,7 +77,7 @@ class Clusters:
         # print(yTrain_label)
         # print(np.array(yTrain['Family']))
         label = model.fit_predict(x)
-        print("Kmeans")
+        print("NEW: Kmeans")
         # print("Predict: \n", yTest_predict)
         # print("Actual: \n", np.array(yTest['Family']))
 
@@ -121,7 +97,7 @@ class Clusters:
         """
         model = AgglomerativeClustering(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("Agglomerative")
+        print("NEW: Agglomerative")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -133,7 +109,7 @@ class Clusters:
         """
         model = Birch(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("Birch")
+        print("NEW: Birch")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -148,7 +124,7 @@ class Clusters:
         """
         model = DBSCAN()
         label = model.fit_predict(x)
-        print("DBSCAN")
+        print("NEW: DBSCAN")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -159,7 +135,7 @@ class Clusters:
         """
         model = MiniBatchKMeans(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("MiniBatchKMeans")
+        print("NEW: MiniBatchKMeans")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -170,7 +146,7 @@ class Clusters:
         """
         model = MeanShift()
         label = model.fit_predict(x)
-        print("MeanShift")
+        print("NEW: MeanShift")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -181,7 +157,7 @@ class Clusters:
         """
         model = SpectralClustering(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("SpectralClustering")
+        print("NEW: SpectralClustering")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label
@@ -192,7 +168,7 @@ class Clusters:
         """
         model = GaussianMixture(n_components=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("GaussianMixture")
+        print("NEW: GaussianMixture")
         score = accuracy_score(np.array(y['Family']), label)
         print("\t accuracy score:", score)
         return label

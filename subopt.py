@@ -48,7 +48,7 @@ def build_subopt_result(structure, energy, data):
             # print (">subopt %d" % data['counter'])
             # print ("%s" % data['sequence'])
             # print ("%s [%6.2f]" % (structure, energy))
-            id_subopt = ">%s_%s_subopt%d" % (data['family_name'], data['id'], data['counter'])
+            id_subopt = ">%s#%s#subopt%d" % (data['family_name'], data['id'], data['counter'])
             data['rna_dict']['%s' % id_subopt] = structure
 
             dot_bracket_str = dot_bracket_str + (id_subopt + '\n' +
