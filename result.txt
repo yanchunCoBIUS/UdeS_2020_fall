@@ -1,0 +1,151 @@
+Birch
+	 accuracy score: 0.92
+		NEW: Birch
+			accuracy score: 1.0
+		NEW: Agglomerative
+			accuracy score: 0.25
+		NEW: Kmeans
+			accuracy score: 0.5
+		NEW: MiniBatchKMeans
+			accuracy score: 0.25
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.75
+		NEW: SpectralClustering
+			accuracy score: 0.15
+		NEW: GaussianMixture
+			accuracy score: 0.5
+
+Agglomerative
+	 accuracy score: 0.39
+		NEW: Birch
+			accuracy score: 0.2
+		NEW: Agglomerative
+			accuracy score: 0.2
+		NEW: Kmeans
+			accuracy score: 0.05
+		NEW: MiniBatchKMeans
+			accuracy score: 0.25
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.45
+		NEW: SpectralClustering
+			accuracy score: 0.2
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+Kmeans
+	 accuracy score: 0.17
+		NEW: Birch
+			accuracy score: 0.0
+		NEW: Agglomerative
+			accuracy score: 0.5
+		NEW: Kmeans
+			accuracy score: 0.25
+		NEW: MiniBatchKMeans
+			accuracy score: 0.5
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.05
+		NEW: SpectralClustering
+			accuracy score: 0.2
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+MiniBatchKMeans
+	 accuracy score: 0.17
+		NEW: Birch
+			accuracy score: 0.0
+		NEW: Agglomerative
+			accuracy score: 0.5
+		NEW: Kmeans
+			accuracy score: 0.25
+		NEW: MiniBatchKMeans
+			accuracy score: 0.5
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.05
+		NEW: SpectralClustering
+			accuracy score: 0.2
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+DBSCAN
+	 accuracy score: 0.0
+		NEW: Birch
+			accuracy score: 0.0
+		NEW: Agglomerative
+			accuracy score: 0.25
+		NEW: Kmeans
+			accuracy score: 0.25
+		NEW: MiniBatchKMeans
+			accuracy score: 0.55
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.0
+		NEW: SpectralClustering
+			accuracy score: 0.1
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+MeanShift
+	 accuracy score: 0.02
+		NEW: Birch
+			accuracy score: 0.0
+		NEW: Agglomerative
+			accuracy score: 0.3
+		NEW: Kmeans
+			accuracy score: 0.25
+		NEW: MiniBatchKMeans
+			accuracy score: 0.55
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.0
+		NEW: SpectralClustering
+			accuracy score: 0.1
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+SpectralClustering
+	 accuracy score: 0.39
+		NEW: Birch
+			accuracy score: 0.2
+		NEW: Agglomerative
+			accuracy score: 0.2
+		NEW: Kmeans
+			accuracy score: 0.05
+		NEW: MiniBatchKMeans
+			accuracy score: 0.25
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.45
+		NEW: SpectralClustering
+			accuracy score: 0.2
+		NEW: GaussianMixture
+			accuracy score: 0.1
+
+GaussianMixture
+	 accuracy score: 0.11
+		NEW: Birch
+			accuracy score: 0.0
+		NEW: Agglomerative
+			accuracy score: 0.3
+		NEW: Kmeans
+			accuracy score: 0.25
+		NEW: MiniBatchKMeans
+			accuracy score: 0.5
+		NEW: DBSCAN
+			accuracy score: 0.0
+		NEW: MeanShift
+			accuracy score: 0.05
+		NEW: SpectralClustering
+			accuracy score: 0.05
+		NEW: GaussianMixture
+			accuracy score: 0.1

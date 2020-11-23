@@ -21,11 +21,11 @@ class NewClusters:
     num_of_structures: 
     num_of_sequences:
     """
-    def __init__(self, family_list, num_of_structures, num_of_sequences, new_df):
+    def __init__(self, family_list, num_of_structures, num_of_sequences):
         self.family_list = family_list
         self.num_of_structures = num_of_structures
         self.num_of_sequences = num_of_sequences
-        self.df = new_df
+        # self.df = new_df
         self.dataFrameSNM = self.transform_SNM_to_DataFrame()
                             
 
@@ -61,7 +61,8 @@ class NewClusters:
         """
         11/17 Need to improve: change name and class, because is reuse the Clusters class.
         """
-        df = self.df
+        # df = self.df
+        df = pd.read_csv(os.path.join(os.getcwd(), "super_n_motif", "lib", "superNMotif", "resultMatrix", "matSnmRep_SSbySnm.csv"))
         
         family_column = []
         for i in range(len(self.family_list)):
