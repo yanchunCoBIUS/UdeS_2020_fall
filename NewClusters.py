@@ -7,7 +7,7 @@ import numpy as np
 import os
 from sklearn.cluster import SpectralClustering, MeanShift, KMeans, Birch, AffinityPropagation, AgglomerativeClustering, DBSCAN, OPTICS, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import *
 
 
 class NewClusters:
@@ -77,12 +77,13 @@ class NewClusters:
         # print(yTrain_label)
         # print(np.array(yTrain['Family']))
         label = model.fit_predict(x)
-        print("NEW: Kmeans")
-        # print("Predict: \n", yTest_predict)
-        # print("Actual: \n", np.array(yTest['Family']))
+        print("\t NEW: Kmeans")
+        # print("\t Predict: \n", yTest_predict)
+        # print("\t Actual: \n", np.array(yTest['Family']))
 
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
 
@@ -97,9 +98,10 @@ class NewClusters:
         """
         model = AgglomerativeClustering(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("NEW: Agglomerative")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: Agglomerative")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
 
@@ -109,9 +111,10 @@ class NewClusters:
         """
         model = Birch(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("NEW: Birch")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: Birch")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
 
@@ -124,9 +127,10 @@ class NewClusters:
         """
         model = DBSCAN()
         label = model.fit_predict(x)
-        print("NEW: DBSCAN")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: DBSCAN")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
     
@@ -135,9 +139,10 @@ class NewClusters:
         """
         model = MiniBatchKMeans(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("NEW: MiniBatchKMeans")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: MiniBatchKMeans")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
 
@@ -146,9 +151,10 @@ class NewClusters:
         """
         model = MeanShift()
         label = model.fit_predict(x)
-        print("NEW: MeanShift")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: MeanShift")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
 
@@ -157,9 +163,10 @@ class NewClusters:
         """
         model = SpectralClustering(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("NEW: SpectralClustering")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: SpectralClustering")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label
 
     
@@ -168,7 +175,8 @@ class NewClusters:
         """
         model = GaussianMixture(n_components=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("NEW: GaussianMixture")
-        score = accuracy_score(np.array(y['Family']), label)
-        print("\t accuracy score:", score)
+        print("\t NEW: GaussianMixture")
+        print("\t \t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        print("\t \t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        print("\t \t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
         return label

@@ -15,37 +15,28 @@ def main():
     x, y = clusters.getFeaturesAndTarget()
 
     label_birch = clusters.birch(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_birch)
-    new_clusters.birch(new_x, new_y)
-
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_birch)
+    
     label_agglomerative = clusters.agglomerativeClustering(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_agglomerative)
-    new_clusters.agglomerativeClustering(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_agglomerative)
 
     label_kmeans = clusters.k_means(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_kmeans)
-    new_clusters.k_means(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_kmeans)
 
     label_miniBatchKMeans = clusters.miniBatchKMeans(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_miniBatchKMeans)
-    new_clusters.miniBatchKMeans(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_miniBatchKMeans)
 
     label_dbscan = clusters.dbscan(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_dbscan)
-    new_clusters.dbscan(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_dbscan)
 
     label_meanShift = clusters.meanShift(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_meanShift)
-    new_clusters.meanShift(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_meanShift)
 
     label_spectralClustering = clusters.spectralClustering(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_spectralClustering)
-    new_clusters.spectralClustering(new_x, new_y)
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_spectralClustering)
 
     label_gaussianMixture = clusters.gaussianMixture(x, y)
-    new_clusters, new_x, new_y = get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_gaussianMixture)
-    new_clusters.gaussianMixture(new_x, new_y)
-  
+    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_gaussianMixture)
 
 
 def get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, clustered_label):
@@ -90,7 +81,15 @@ def get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_seq
     # print(new_df)
     new_clusters = NewClusters(family_list, num_of_structures, num_of_sequences, new_df)
     new_x, new_y = new_clusters.getFeaturesAndTarget()
-    return new_clusters, new_x, new_y
+
+    new_clusters.birch(new_x, new_y)
+    new_clusters.agglomerativeClustering(new_x, new_y)
+    new_clusters.k_means(new_x, new_y)
+    new_clusters.miniBatchKMeans(new_x, new_y)
+    new_clusters.dbscan(new_x, new_y)
+    new_clusters.meanShift(new_x, new_y)
+    new_clusters.spectralClustering(new_x, new_y)
+    new_clusters.gaussianMixture(new_x, new_y)
 
 
 if __name__ == "__main__":
