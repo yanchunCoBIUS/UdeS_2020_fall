@@ -83,7 +83,7 @@ def compute_structure(family_name, num_of_structures, num_of_sequences):
 
         # Enumerate all structures 500 dacal/mol = 5 kcal/mol arround
         # the MFE and print each structure using the function above
-        a.subopt_cb(500, build_subopt_result, subopt_data)
+        a.subopt_cb(1000, build_subopt_result, subopt_data)
         
     return dict_RNA, "\n".join(rna_sequence)
 

@@ -107,9 +107,12 @@ class Clusters:
 
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
 
@@ -127,9 +130,12 @@ class Clusters:
         print("Agglomerative")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
 
@@ -142,9 +148,12 @@ class Clusters:
         print("Birch")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
 
@@ -160,9 +169,12 @@ class Clusters:
         print("DBSCAN")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
     
@@ -174,9 +186,12 @@ class Clusters:
         print("MiniBatchKMeans")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
 
@@ -188,9 +203,12 @@ class Clusters:
         print("MeanShift")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label
 
 
@@ -202,9 +220,11 @@ class Clusters:
         print("SpectralClustering")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
         return label
 
     
@@ -216,7 +236,10 @@ class Clusters:
         print("GaussianMixture")
         # score = accuracy_score(np.array(y['Family']), label)
         # print("\t accuracy score:", score)
-        print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+
+        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
+        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
+        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
+        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+
         return label

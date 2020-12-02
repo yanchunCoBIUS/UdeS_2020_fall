@@ -5,7 +5,7 @@ from NewClusters import *
 def main():
     family_list = ["RF02913", "RF02914", "RF02924", "RF03064"]
     
-    num_of_structures = 5
+    num_of_structures = 25
     num_of_sequences = 5
 
     clusters = Clusters(family_list, num_of_structures, num_of_sequences)
@@ -26,8 +26,8 @@ def main():
     label_miniBatchKMeans = clusters.miniBatchKMeans(x, y)
     get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_miniBatchKMeans)
 
-    label_dbscan = clusters.dbscan(x, y)
-    get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_dbscan)
+    # label_dbscan = clusters.dbscan(x, y)
+    # get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_dbscan)
 
     label_meanShift = clusters.meanShift(x, y)
     get_labeled_cluster(dataFrameSNM, family_list, num_of_structures, num_of_sequences, label_meanShift)
