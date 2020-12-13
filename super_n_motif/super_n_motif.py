@@ -4,9 +4,10 @@ import numpy as np
 import csv
 import shutil
 import platform
+import uuid
 
 
-def runSNM(dot_bracket_str):
+def runSNM(dot_bracket_str, uuid):
     """ Run the super-n-motif exec.
 
     Reconstruct the RNA sequence file that super-n-motif program take as input.
@@ -20,14 +21,14 @@ def runSNM(dot_bracket_str):
         path_to_prog = os.path.join(os.getcwd(), "super_n_motif", "lib", "superNMotif")
 
     #Save to file
-    filename = os.path.join(path_to_prog, 'RNA.db')
+    filename = os.path.join(path_to_prog, uuid+'_RNA.db')
     # if not os.path.isdir(path_to_prog):
     #     os.mkdir(path_to_prog)
     
     with open(filename, 'w') as file:
         file.write(dot_bracket_str)
 
-    arg_list = [os.path.join(path_to_prog, "supernmotifs"), "-p", "5", "-i", filename, "-o", os.path.join(path_to_prog, "resultMatrix")]
+    arg_list = [os.path.join(path_to_prog, "supernmotifs"), "-p", "1", "-i", filename, "-o", os.path.join(path_to_prog, uuid + "_resultMatrix")]
 
     subprocess.check_call(arg_list, cwd=path_to_prog)
     

@@ -1,3 +1,4 @@
+import multiprocessing
 from super_n_motif.super_n_motif import *
 from subopt import *
 from sklearn.model_selection import train_test_split
@@ -5,6 +6,7 @@ from sklearn.model_selection import StratifiedKFold
 import pandas as pd
 import numpy as np
 import os
+import uuid
 from sklearn.cluster import SpectralClustering, MeanShift, KMeans, Birch, AffinityPropagation, AgglomerativeClustering, DBSCAN, OPTICS, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import *
@@ -28,7 +30,11 @@ class Clusters:
         self.num_of_sequences = num_of_sequences
         self.dict_allFamilies = dict()
         self.dataFrameSNM = self.transform_SNM_to_DataFrame()
-                
+        self.score_list = []                
+
+    def get_score_list(self):
+        return self.score_list
+
 
     def splitTrainAndTest(self, trainSize, testSize):
         """
@@ -51,7 +57,7 @@ class Clusters:
         y = self.dataFrameSNM.iloc[:, [-1]]
         return x, y
     
-    def use_allFamilies_runSNM(self):
+    def use_allFamilies_runSNM(self, uid):
         """
         Run SUM
         """
@@ -65,8 +71,28 @@ class Clusters:
 
             input_for_SNM = input_for_SNM + '\n' + rna_sequence
                 
-        runSNM(input_for_SNM)
+        runSNM(input_for_SNM, uid)
         
+        # pool = multiprocessing.Pool()
+        # results = pool.map(self.run_subopt, self.family_list)
+        # pool.close()
+        # pool.join()
+        
+        # input_for_SNM = ""
+        # for i in results:
+        #     input_for_SNM = input_for_SNM + i
+            
+        # runSNM(input_for_SNM, uid)
+    
+    
+    # def run_subopt(self, family_name):
+    #     dict_RNA, rna_sequence = compute_structure(family_name, self.num_of_structures, self.num_of_sequences)
+
+    #     # dictionary contains all information
+    #     self.dict_allFamilies[family_name] = dict_RNA
+
+    #     return rna_sequence
+
 
     def get_dataFrameSNM(self):
         """
@@ -84,34 +110,30 @@ class Clusters:
         """
         Read Super_n_motif(SNM) result: matSnmRep_SSbySnm.csv as a DataFrame
         """
-        self.use_allFamilies_runSNM()
+        uid = "family{}_structure{}_sequence{}".format(len(self.family_list), self.num_of_structures, self.num_of_sequences)
+        self.use_allFamilies_runSNM(uid)
 
-        df = pd.read_csv(os.path.join(os.getcwd(), "super_n_motif", "lib", "superNMotif", "resultMatrix", "matSnmRep_SSbySnm.csv"))
-        
-        family_column = []
-        for i in range(len(self.family_list)):
-            single_family = np.full(self.num_of_structures * self.num_of_sequences, i)
-            family_column.extend(single_family)
-        df['Family'] = family_column
+        df = pd.read_csv(os.path.join(os.getcwd(), "super_n_motif", "lib", "superNMotif", uid+"_resultMatrix", "matSnmRep_SSbySnm.csv"))
+        df['Family'] = [self.family_list.index(i.split('#')[0]) for i in df.iloc[:, 0]]
+        # family_column = []
+        # for i in range(len(self.family_list)):
+        #     single_family = np.full(self.num_of_structures * self.num_of_sequences, i)
+        #     family_column.extend(single_family)
+        # try:
+        #     df['Family'] = family_column
+        # except AttributeError as e:
+        #     pass
         return df
 
     def k_means(self, x, y):
         model = KMeans(n_clusters=len(self.family_list), random_state=0)
-        # yTrain_label = kmeans.labels_
-        # print(yTrain_label)
-        # print(np.array(yTrain['Family']))
+        
         label = model.fit_predict(x)
-        print("Kmeans")
-        # print("Predict: \n", yTest_predict)
-        # print("Actual: \n", np.array(yTest['Family']))
-
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("Kmeans")
+       
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
 
@@ -127,15 +149,11 @@ class Clusters:
         """
         model = AgglomerativeClustering(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("Agglomerative")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
-
+        # print("Agglomerative")
+        
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
         return label
 
 
@@ -145,14 +163,11 @@ class Clusters:
         """
         model = Birch(n_clusters=len(self.family_list))
         label = model.fit_predict(x)
-        print("Birch")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("Birch")
+        
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
 
@@ -166,14 +181,11 @@ class Clusters:
         """
         model = DBSCAN()
         label = model.fit_predict(x)
-        print("DBSCAN")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("DBSCAN")
+        
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
 
@@ -183,14 +195,11 @@ class Clusters:
         """
         model = MiniBatchKMeans(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("MiniBatchKMeans")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("MiniBatchKMeans")
+        
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
 
@@ -200,14 +209,11 @@ class Clusters:
         """
         model = MeanShift()
         label = model.fit_predict(x)
-        print("MeanShift")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("MeanShift")
+        
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
 
@@ -217,14 +223,11 @@ class Clusters:
         """
         model = SpectralClustering(n_clusters=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("SpectralClustering")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("SpectralClustering")
+       
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
         return label
 
     
@@ -233,13 +236,10 @@ class Clusters:
         """
         model = GaussianMixture(n_components=len(self.family_list), random_state=0)
         label = model.fit_predict(x)
-        print("GaussianMixture")
-        # score = accuracy_score(np.array(y['Family']), label)
-        # print("\t accuracy score:", score)
-
-        # print("\t Homogeneity: %0.3f" % homogeneity_score(np.array(y['Family']), label))
-        # print("\t Completeness: %0.3f" % completeness_score(np.array(y['Family']), label))
-        # print("\t V-measure: %0.3f" % v_measure_score(np.array(y['Family']), label))
-        print("\t ARI MEASURE: %0.3f" % adjusted_rand_score(np.array(y['Family']), label))
+        # print("GaussianMixture")
+       
+        score = adjusted_rand_score(np.array(y['Family']), label)
+        self.score_list.append(score)
+        # print("\t ARI MEASURE: %0.3f" % score)
 
         return label
